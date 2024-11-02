@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/stylesUpdateUser.css' %}">
+    <script src="{% static 'scripts/scriptsUpdateUser.js' %}"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h2>Actualizar Información</h2>
+        <form method='POST' action="{% url 'updateUser' %}">
+            {% csrf_token %}
+            <label for='newNombre'>Nombre: </label>
+            <input type='text' name='newNombre' id='newNombre' required>
+
+            <label for='newApellido'>Apellido: </label>
+            <input type='text' name='newApellido' id='newApellido' required>
+
+            <label for='newEmail'>Email: </label>
+            <input type='email' name='newEmail' id='newEmail' required>
+
+            <label for='newDireccion'>Dirección: </label>
+            <input type='text' name='newDireccion' id='newDireccion' required>
+
+            <button type='submit'>Actualizar</button>
+        </form>
+
+        {% if message %}
+            <script>
+                showAlert("{{ message }}");
+            </script>
+        {% endif %}
+    </div>
+</body>
+</html>

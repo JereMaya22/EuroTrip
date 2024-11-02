@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Perfil del Usuario</title>
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/stylesUserProfile.css' %}">
+</head>
+<body>
+    <div class="container">
+        <img src="/static/images/logo EuroTrip.webp" alt="Logo EuroTrip" class="tablinks" onclick="openTab(event, 'Home')" style="cursor: pointer; max-width: 100%; height: auto;">
+        <h1>Perfil del Usuario</h1>
+        <p>Nombre: {{ user.nombre }}</p>
+        <p>Apellido: {{ user.apellido }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Dirección: {{ user.direccion }}</p>
+        <a href="{% url 'updateUser' %}">
+            <button>Actualizar Perfil</button>
+        </a>
+    </div>
+</body>
+</html>

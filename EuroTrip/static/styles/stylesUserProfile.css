@@ -1,0 +1,66 @@
+/* Estilo general del cuerpo con imagen de fondo */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('/static/images/3.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Estilo del contenedor del perfil */
+.container {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Estilo del encabezado */
+h1 {
+    margin-bottom: 20px;
+    color: #2663ec;
+}
+
+/* Estilo de los párrafos */
+p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Estilo del botón de actualizar perfil */
+button {
+    background-color: #2663ec;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #0c41bd;
+}
+
+/* Estilo de los enlaces */
+a {
+    color: #2663ec;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+}
+
+a:hover {
+    text-decoration: underline;
+}
