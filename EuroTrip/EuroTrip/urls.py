@@ -14,7 +14,7 @@ urlpatterns = [
     path('reservas/', ReservasView, name='Reservas'),
     path('contactos/', ContactosView, name='Contactos'),
     path('usuario/', UsuarioView, name='Usuario'),
-    path('', include('flights.urls')),  # Incluir las URLs de la aplicación flights
+    path('', include('flights.urls')),  
 ]
 
 # Manejo de errores 404

@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Apps.Usuarios',
-    'flights',  # Asegúrate de incluir la aplicación flights
+    'flights',  
 ]
 
 MIDDLEWARE = [

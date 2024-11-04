@@ -130,39 +130,47 @@
     </div>
 
     <script>
+        // Función para cerrar el modal de éxito
         function closeModal() {
             document.getElementById('successModal').style.display = 'none';
         }
         
+        // Cuando se carga la página, verifica si hay un parámetro de éxito en la URL
         window.onload = function() {
             if (new URLSearchParams(window.location.search).get('success')) {
                 document.getElementById('successModal').style.display = 'block';
             }
         };
         
-        
+        // Función para manejar la navegación por pestañas
         function openTab(evt, tabName) {
+            // Oculta todos los contenidos de pestañas
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (var i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
         
+            // Remueve la clase active de todas las pestañas
             var tablinks = document.getElementsByClassName("tablinks");
             for (var i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
         
+            // Muestra el contenido de la pestaña seleccionada y la marca como activa
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
         
+        // Cuando el DOM está listo, hace clic en la primera pestaña
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelector('.tablinks').click();
         });
         
+        // Maneja el envío del formulario de búsqueda de vuelos
         document.getElementById('flightForm').addEventListener('submit', async function(event) {
             event.preventDefault();
         
+            // Recopila los datos del formulario
             const formData = {
                 origen: document.getElementById('origen').value,
                 destino: document.getElementById('destino').value,
@@ -172,6 +180,7 @@
             };
         
             try {
+                // Realiza la petición al servidor
                 const response = await fetch('/search-flights/', {
                     method: 'POST',
                     headers: {
@@ -181,6 +190,7 @@
                     body: JSON.stringify(formData)
                 });
         
+                // Procesa la respuesta
                 const flights = await response.json();
                 console.log(flights);  // Imprime la respuesta en la consola para verificar su estructura
                 displayResults(flights);
@@ -189,22 +199,27 @@
             }
         });
         
+        // Función para mostrar los resultados de la búsqueda de vuelos
         function displayResults(flights) {
+            // Obtiene el div de resultados y limpia su contenido
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = '';
         
+            // Si hay errores, muestra el mensaje de error
             if (flights.errors) {
                 resultsDiv.innerHTML = `<p>Error: ${flights.errors[0].detail}</p>`;
                 document.getElementById('floatingPanel').style.display = 'block'; // Mostrar panel flotante
                 return;
             }
         
+            // Si no hay datos de vuelos, muestra mensaje
             if (!Array.isArray(flights.data)) {
                 resultsDiv.innerHTML = '<p>No se encontraron vuelos.</p>';
                 document.getElementById('floatingPanel').style.display = 'block'; // Mostrar panel flotante
                 return;
             }
         
+            // Recorre cada vuelo y crea su elemento HTML
             flights.data.forEach(flight => {
                 const flightInfo = document.createElement('div');
                 flightInfo.innerHTML = `
@@ -217,24 +232,32 @@
                 resultsDiv.appendChild(flightInfo);
             });
         
-            document.getElementById('floatingPanel').style.display = 'block'; // Mostrar panel flotante
+            // Muestra el panel flotante con los resultados
+            document.getElementById('floatingPanel').style.display = 'block';
         
         }
         
+        // Event listener para cerrar el panel de resultados
         document.getElementById('closePanel').addEventListener('click', function() {
             document.getElementById('floatingPanel').style.display = 'none';
         });
         
+        // Muestra la sección Home por defecto
         document.getElementById("Home").style.display = "block";
         
+        // Agrega un event listener para detectar clics en los botones de compra
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('buy-button')) {
+                // Obtiene los datos del vuelo del botón clickeado
                 const flightId = event.target.getAttribute('data-flight-id');
                 const flightPrice = event.target.getAttribute('data-flight-price');
-                const flightSalida = event.target.getAttribute('data-salida');  // Extraer el precio del vuelo
-                const flightLlegada = event.target.getAttribute('data-llegada');  // Extraer el precio del vuelo
+                const flightSalida = event.target.getAttribute('data-salida');  
+                const flightLlegada = event.target.getAttribute('data-llegada');  
 
+                // Obtiene el ID del usuario de la sesión
                 const UserId= '{{request.session.user_id}}';
+                
+                // Crea el objeto con los datos de la factura
                 const Facture={
                     userId: UserId,
                     flight_id: flightId,
@@ -245,20 +268,21 @@
                     fechaLlegada: flightLlegada.toString().split('T')[0],
                 }
 
-                        // Enviar datos al backend mediante fetch
+                // Envía los datos al endpoint de recibo
                 fetch('/recivo/', {
                     method: 'POST',
                     headers: {  
                         'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}' // Asegúrate de incluir el token CSRF
+                        'X-CSRFToken': '{{ csrf_token }}' // Token CSRF requerido
                     },
                     body: JSON.stringify(Facture)
                 }).then(response => {
-                    // Imprimir la respuesta para depuración
+                    // Registra la respuesta para depuración
                     console.log('Respuesta del servidor:', response);
-                    return response.json();  // Intenta convertir a JSON
+                    return response.json();  
                 })
                 .then(data => {
+                    // Si hay URL de aprobación, redirige
                     if (data.approval_url) {
                         window.location.href = data.approval_url; 
                     } else {
@@ -267,6 +291,7 @@
                 })
                 .catch(error => console.error('Error al crear el pago:', error));
                 
+                // Envía los datos al endpoint de creación de pago
                 fetch('/create-payment/', {
                     method: 'POST',
                     headers: {
@@ -275,13 +300,14 @@
                     },
                     body: JSON.stringify({
                         flight_id: flightId,
-                        price: flightPrice  // Enviar el precio
+                        price: flightPrice  
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
+                    // Si hay URL de aprobación, redirige a PayPal
                     if (data.approval_url) {
-                        window.location.href = data.approval_url;  // Redirige a PayPal
+                        window.location.href = data.approval_url;  
                     } else {
                         console.error("Error al crear el pago:", data.error);
                     }
