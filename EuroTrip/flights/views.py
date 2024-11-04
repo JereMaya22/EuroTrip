@@ -275,7 +275,7 @@ def search_flights(request):
         
         # Configuración para la llamada a la API de Amadeus
         amadeus_api_url = 'https://test.api.amadeus.com/v2/shopping/flight-offers'
-        amadeus_api_key = 'BL28ukjmitSHps2IygrdRgdZDGF1'
+        amadeus_api_key = 'AiZTq87UYT6jhXjbneAs3OilaeBC'
 
         # Parámetros para la búsqueda de vuelos
         params = {
@@ -340,8 +340,8 @@ def create_payment(request):
             "intent": "sale", # Indica que es una venta
             "payer":{"payment_method":"paypal"}, # Método de pago: PayPal
             "redirect_urls":{ # URLs de redirección después del pago
-                "return_url": "http://127.0.0.1:8001/payment/execute", # URL si el pago es exitoso
-                "cancel_url": "http://127.0.0.1:8001/payment/cancel", # URL si se cancela el pago
+                "return_url": "http://127.0.0.1:8000/payment/execute", # URL si el pago es exitoso
+                "cancel_url": "http://127.0.0.1:8000/payment/cancel", # URL si se cancela el pago
             },
             "transactions": [{ # Detalles de la transacción
                 "amount":{ # Monto y moneda

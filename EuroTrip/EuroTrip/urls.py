@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import handler404
+from django.views.generic import RedirectView
 from Apps.Usuarios.views import CrearUsuario, Login, Home, UpdateUser, GuestLogin, ViajesView, ReservasView, ContactosView, UsuarioView, error_404_view
 
 urlpatterns = [
@@ -14,6 +15,7 @@ urlpatterns = [
     path('reservas/', ReservasView, name='Reservas'),
     path('contactos/', ContactosView, name='Contactos'),
     path('usuario/', UsuarioView, name='Usuario'),
+    path('', RedirectView.as_view(url='/home/', permanent=False)),  # Redirige la URL raíz a /home/
     path('', include('flights.urls')),  
 ]
 
