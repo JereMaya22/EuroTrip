@@ -6,6 +6,44 @@
     <title>EuroTrip - Inicio</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles/stylesHome.css' %}">
+    <style>
+        /* Estilos para el modal */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed; /* Fijo en la pantalla */
+            z-index: 1000; /* Por encima de otros elementos */
+            left: 0;
+            top: 0;
+            width: 100%; /* Ancho completo */
+            height: 100%; /* Alto completo */
+            overflow: auto; /* Permitir desplazamiento si es necesario */
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro con opacidad */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% desde la parte superior y centrado */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Ancho del modal */
+            max-width: 600px; /* Ancho máximo */
+            border-radius: 8px; /* Bordes redondeados */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="tab">
@@ -24,7 +62,8 @@
         <div class="container">
             <h1>Encuentra tu próximo destino</h1>
             <p class="highlight-text">Reserva vuelos a los mejores precios y vive experiencias inolvidables</p>
-            <form id="flightForm">
+            <form id="flightForm" method="post" action="{% url 'search_flights' %}">
+                {% csrf_token %}
                 <div class="search-box">
                     <div class="search-field">
                         <label for="origen">Origen</label>
@@ -120,14 +159,33 @@
         </div>
     </div>
 
-    <div id="successModal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5);">
-        <div style="background:#fff; margin:15% auto; padding:20px; width:300px; text-align:center;">
-            <h2>Compra realizada con éxito</h2>
-            <p>Gracias por tu compra.</p>
-            <button onclick="closeModal()">Cerrar</button>
+    <!-- Modal para mostrar el recibo -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Recibo de Compra</h2>
+            <p id="receiptDetails"></p>
         </div>
     </div>
 
     <script src="{% static 'scripts/scriptsHome.js' %}"></script>
+    <script>
+        function openModal(receiptData) {
+            const receiptDetails = document.getElementById('receiptDetails');
+            receiptDetails.innerHTML = `
+                <strong>ID de vuelo:</strong> ${receiptData.flight_id}<br>
+                <strong>Salida:</strong> ${receiptData.departure}<br>
+                <strong>Llegada:</strong> ${receiptData.arrival}<br>
+                <strong>Precio:</strong> ${receiptData.price}<br>
+                <strong>Fecha:</strong> ${receiptData.date}<br>
+                <strong>Número de confirmación:</strong> ${receiptData.confirmation_number}<br>
+            `;
+            document.getElementById('receiptModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('receiptModal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>

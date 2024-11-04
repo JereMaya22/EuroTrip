@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo de Compra</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/stylesHome.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Recibo de Compra</h1>
+        <p><strong>ID de vuelo:</strong> {{ flight_details.flight_id }}</p>
+        <p><strong>Salida:</strong> {{ flight_details.departure }}</p>
+        <p><strong>Llegada:</strong> {{ flight_details.arrival }}</p>
+        <p><strong>Precio:</strong> {{ flight_details.price }}</p>
+        <p><strong>Fecha:</strong> {{ flight_details.date }}</p>
+        <p><strong>Número de confirmación:</strong> {{ flight_details.confirmation_number }}</p>
+        <p>{{ message }}</p>
+        <a href="{% url 'home' %}">Volver a la página principal</a>
+    </div>
+</body>
+</html> 

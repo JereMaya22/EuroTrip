@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import save_flight_id, test_email
 
 urlpatterns = [
     path('', views.Home, name='home'),
@@ -16,4 +17,6 @@ urlpatterns = [
     path('historial/', views.Historial,name='historial'),
     path("create-payment/", views.create_payment, name="create_payment"),
     path('payment/execute', views.execute_payment, name='execute_payment'),
+    path('save-flight-id/', save_flight_id, name='save_flight_id'),
+    path('test-email/', test_email, name='test_email'),
 ]

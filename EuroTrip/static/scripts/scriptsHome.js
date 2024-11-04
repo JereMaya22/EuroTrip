@@ -28,33 +28,33 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector('.tablinks').click();
 });
 
-document.getElementById('flightForm').addEventListener('submit', async function(event) {
+document.getElementById('flightForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const formData = {
-        origen: document.getElementById('origen').value,
-        destino: document.getElementById('destino').value,
-        fechaSalida: document.getElementById('fechaSalida').value,
-        fechaLlegada: document.getElementById('fechaLlegada').value,
-        numeroDeAdultos: document.getElementById('numeroDeAdultos').value
-    };
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const formData = new FormData(this);
 
-    try {
-        const response = await fetch('/search-flights/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        const flights = await response.json();
-        console.log(flights);  // Imprime la respuesta en la consola para verificar su estructura
-        displayResults(flights);
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-    }
+    fetch('/search-flights/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            origen: formData.get('origen'),
+            destino: formData.get('destino'),
+            fechaSalida: formData.get('fechaSalida'),
+            fechaLlegada: formData.get('fechaLlegada'),
+            numeroDeAdultos: formData.get('numeroDeAdultos')
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        displayResults(data);
+    })
+    .catch(error => console.error('Error:', error));
 });
 
 function displayResults(flights) {
@@ -100,11 +100,13 @@ document.addEventListener('click', function(event) {
         const flightId = event.target.getAttribute('data-flight-id');
         const flightPrice = event.target.getAttribute('data-flight-price');  // Extraer el precio del vuelo
 
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Obtén el token CSRF aquí
+
         fetch('/create-payment/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
+                'X-CSRFToken': csrfToken  // Usa el token CSRF obtenido
             },
             body: JSON.stringify({
                 flight_id: flightId,
@@ -114,6 +116,16 @@ document.addEventListener('click', function(event) {
         .then(response => response.json())
         .then(data => {
             if (data.approval_url) {
+                // Guardar el ID del vuelo en la sesión del servidor
+                fetch('/save-flight-id/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ flight_id: flightId })
+                });
+
                 window.location.href = data.approval_url;  // Redirige a PayPal
             } else {
                 console.error("Error al crear el pago:", data.error);
@@ -122,3 +134,22 @@ document.addEventListener('click', function(event) {
         .catch(error => console.error('Error al crear el pago:', error));
     }
 });
+
+// En la función execute_payment, después de enviar el recibo
+function executePayment() {
+    // ... tu lógica existente ...
+    if (payment.execute({"payer_id": payer_id})) {
+        // Aquí obtén los detalles del vuelo
+        const flightDetails = {
+            flight_id: flight_details.flight_id,
+            departure: flight_details.departure,
+            arrival: flight_details.arrival,
+            price: flight_details.price,
+            date: flight_details.date,
+            confirmation_number: flight_details.confirmation_number
+        };
+        openModal(flightDetails);  // Abre el modal con los detalles del recibo
+    } else {
+        console.error("Error al ejecutar el pago:", payment.error);
+    }
+}

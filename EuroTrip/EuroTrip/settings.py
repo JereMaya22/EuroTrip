@@ -114,3 +114,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAYPAL_CLIENT_ID = 'ASBn6-VgiC-yFTce_VckDClGor9VdXJanuN7USPaTnJJluw1_baK6XcSfnAdTNJDB5jFRQFTpbJ6XSPH'
 PAYPAL_CLIENT_SECRET = 'EEV-t4BFuo13zUp0bo8LpgCsHy3liRpzFKAlZsx5OhUhFcMWZguvI2rrEx3DbzHL6_qodXpJ70yVauHi'
 PAYPAL_MODE = 'sandbox' 
+
+# Configuración de correo electrónico para pruebas
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
