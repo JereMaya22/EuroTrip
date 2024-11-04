@@ -16,6 +16,6 @@ urlpatterns = [
     path('historial/', views.Historial,name='historial'),
     path("create-payment/", views.create_payment, name="create_payment"),
     path('payment/execute/', views.execute_payment, name='execute_payment'),
-    path('recivo/<int:pago_id>/', views.Recivo, name='recivo'),
-    path('recibo/<int:pago_id>/', views.resivoPDF, name='recibo_pdf'),
+    path('recivo/', views.Recivo, name='recivo'),
+    path('recivo/<int:pago_id>/', views.PDFRecibo.as_view(), name='recivo'),
 ]

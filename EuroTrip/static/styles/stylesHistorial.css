@@ -9,7 +9,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 /* Estilo del contenedor */
@@ -17,50 +17,111 @@ body {
     background-color: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
     padding: 40px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-width: 800px;
-    width: 100%;
+    width: 90%;
     text-align: center;
+    margin: 20px;
 }
 
 /* Estilo del encabezado */
 h1 {
     margin-bottom: 20px;
     color: #2663ec;
+    font-size: 1.8em;
 }
 
-/* Estilo de los párrafos */
+/* Estilo del párrafo de descripción */
 p {
-    margin: 10px 0;
+    margin: 10px 0 30px 0;
     font-size: 16px;
     color: #333;
 }
 
-/* Estilo del botón */
-button {
-    background-color: #2663ec;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 10px;
-    font-size: 16px;
-    transition: background-color 0.3s;
-    width: 100%;
+/* Estilo de los elementos de la lista */
+.historial-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
-button:hover {
-    background-color: #0c41bd;
+.historial-list li {
+    margin-bottom: 15px;
 }
 
-/* Estilo de los enlaces */
-a {
+.historial-item {
+    background-color: #f5f7fa;
+    border: 1px solid #d9e1e8;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    flex-wrap: wrap;
+}
+
+.historial-item:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+}
+
+/* Ajustes de texto en cada elemento */
+.details {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.amount {
+    font-size: 1em;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Enlace de descarga */
+.download-link {
     color: #2663ec;
     text-decoration: none;
-    display: block;
-    margin: 10px 0;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: 1px solid #2663ec;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 10px;
+    text-align: center;
 }
 
-a:hover {
-    text-decoration: underline;
+.download-link:hover {
+    background-color: #2663ec;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Media Queries para pantalla pequeña */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .historial-item {
+        padding: 15px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .download-link {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .details, .amount {
+        font-size: 1em;
+    }
 }

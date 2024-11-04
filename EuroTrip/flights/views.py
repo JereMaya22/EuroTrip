@@ -225,7 +225,7 @@ def search_flights(request):
         
         # Aquí puedes hacer la llamada a la API de Amadeus
         amadeus_api_url = 'https://test.api.amadeus.com/v2/shopping/flight-offers'
-        amadeus_api_key = 'I35Ap8nTQDyXGqAHB8EAKlcKALB7'  # Reemplaza con tu nuevo token de acceso
+        amadeus_api_key = 'EkIZsEnfgC4lEfi9VhZ1eNK7taKp'  # Reemplaza con tu nuevo token de acceso
 
         params = {
             'originLocationCode': origen_code,
@@ -270,8 +270,8 @@ def create_payment(request):
             "intent": "sale",
             "payer":{"payment_method":"paypal"},
             "redirect_urls":{
-                "return_url": "http://127.0.0.1:8000/payment/execute",
-                "cancel_url": "http://127.0.0.1:8000/payment/cancel",
+                "return_url": "http://127.0.0.1:8001/payment/execute",
+                "cancel_url": "http://127.0.0.1:8001/payment/cancel",
             },
             "transactions": [{
                 "amount":{
@@ -316,35 +316,34 @@ def Recivo(request):
 
         return JsonResponse({"success": True})
     
-def resivoPDF(request):
-    class PDFRecibo(View):
-            def get(self, request, *args, **kwargs):
-                # Obtén el pago correspondiente a través de parámetros de la URL o alguna otra forma
-                pago_id = kwargs.get('pago_id')
-                pago = Pago.objects.get(id=pago_id)
+    
+class PDFRecibo(View):
+    def get(self, request, *args, **kwargs):
+        # Obtén el pago correspondiente a través de parámetros de la URL o alguna otra forma
+        pago_id = kwargs.get('pago_id')
+        pago = Pago.objects.get(id=pago_id)
 
-                # Renderiza el HTML para el PDF
-                context = {
-                    'origen': pago.origen,
-                    'destino': pago.destino,
-                    'monto': pago.monto,
-                    'fecha_salida': pago.fecha_salida,
-                    'fecha_llegada': pago.fecha_llegada,
-                }
-                html = render_to_string('recibo.html', context)
+        # Renderiza el HTML para el PDF
+        context = {
+            'origen': pago.origen,
+            'destino': pago.destino,
+            'monto': pago.monto,
+            'fecha_salida': pago.fecha_salida,
+            'fecha_llegada': pago.fecha_llegada,
+        }
+        html = render_to_string('recibo.html', context)
 
-                # Genera el PDF
-                response = HttpResponse(content_type='application/pdf')
-                response['Content-Disposition'] = f'attachment; filename="recibo_{pago_id}.pdf"'
-                
-                # Crea el PDF a partir del HTML
-                pisa_status = pisa.CreatePDF(html, dest=response)
+        # Genera el PDF
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="recibo_{pago_id}.pdf"'
+        
+        # Crea el PDF a partir del HTML
+        pisa_status = pisa.CreatePDF(html, dest=response)
 
-                if pisa_status.err:
-                    return HttpResponse('Error generando PDF')
+        if pisa_status.err:
+            return HttpResponse('Error generando PDF')
 
-                return response
-    return redirect('recivo')
+        return response
 
 
 def execute_payment(request):

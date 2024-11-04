@@ -11,11 +11,16 @@
     <div class="container">
         <h1>Historial de Reservas</h1>
         <p>Aquí puedes ver todas tus reservas anteriores.</p>
-        <ul>
+        <ul class="historial-list">
             {% for pago in pagos %}
                 <li>
-                    Vuelo de {{ pago.origen }} a {{ pago.destino }} - ${{ pago.monto }}
-                    <a href="{% url 'recibo_pdf' pago.id %}">Descargar Factura</a>
+                    <div class="historial-item">
+                        <div class="info">
+                            <p class="details">Vuelo de <strong>{{ pago.origen }}</strong> a <strong>{{ pago.destino }}</strong></p>
+                            <p class="amount">Monto: <strong>${{ pago.monto }}</strong></p>
+                        </div>
+                        <a href="{% url 'recivo' pago.id %}" class="download-link">Descargar Factura</a>
+                    </div>
                 </li>
             {% endfor %}
         </ul>

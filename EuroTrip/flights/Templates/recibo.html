@@ -5,28 +5,68 @@
     <title>Recibo de Pago</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Times New Roman', serif;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            width: 60%;
+            max-width: 600px;
+            border: 1px solid #dedede;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
         }
         h1 {
             text-align: center;
+            color: #2663ec;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
         }
         .recibo {
-            margin-top: 30px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
         }
         .recibo p {
-            margin: 5px 0;
+            margin: 8px 0;
+        }
+        .recibo p strong {
+            color: #2663ec;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #888;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Recibo de Pago</h1>
-    <div class="recibo">
-        <p><strong>Origen:</strong> {{ origen }}</p>
-        <p><strong>Destino:</strong> {{ destino }}</p>
-        <p><strong>Monto:</strong> ${{ monto }}</p>
-        <p><strong>Fecha de Salida:</strong> {{ fecha_salida }}</p>
-        <p><strong>Fecha de Llegada:</strong> {{ fecha_llegada }}</p>
+    <div class="container">
+        <h1>Recibo de Pago</h1>
+        <div class="recibo">
+            <p><strong>Origen:</strong> {{ origen }}</p>
+            <p><strong>Destino:</strong> {{ destino }}</p>
+            <p><strong>Monto:</strong> ${{ monto }}</p>
+            <p><strong>Fecha de Salida:</strong> {{ fecha_salida }}</p>
+            <p><strong>Fecha de Llegada:</strong> {{ fecha_llegada }}</p>
+        </div>
+        <div class="footer">
+            Gracias por su compra.
+        </div>
     </div>
 </body>
 </html>
