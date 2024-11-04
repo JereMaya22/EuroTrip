@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/stylesLogin.css' %}">
+
+    <script src="{% static 'scripts/scriptsLogin.js' %}"></script>
+
+</head>
+<body>
+    <div class="container">
+        <img src="/static/images/logo EuroTrip.webp" alt="Logo EuroTrip" class="tablinks" onclick="openTab(event, 'Home')" style="cursor: pointer; max-width: 100%; height: auto;">
+        <h2>Iniciar sesión</h2>
+        <form method='post' action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for='correo'>Correo Electrónico:</label>
+            <input type='email' name='correo' id='correo' required>
+
+            <label for='contra'>Contraseña:</label>
+            <input type='password' name='contra' id='contra' required>
+
+            <a href="{% url 'register' %}">Crear cuenta</a>
+            <a href="{% url 'guestLogin' %}">Ingresar como invitado</a>
+
+            <button type='submit'>Iniciar</button>
+        </form>
+
+        {% if message %}
+            <script>
+                showAlert("{{ message }}");
+            </script>
+        {% endif %}
+    </div>
+</body>
+</html>

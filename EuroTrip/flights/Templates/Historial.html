@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Reservas</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/stylesHistorial.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Historial de Reservas</h1>
+        <p>Aquí puedes ver todas tus reservas anteriores.</p>
+        <ul>
+            {% for pago in pagos %}
+                <li>
+                    Vuelo de {{ pago.origen }} a {{ pago.destino }} - ${{ pago.monto }}
+                    <a href="{% url 'recibo_pdf' pago.id %}">Descargar Factura</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+ /* Estilo general del cuerpo */
+ body {
+    font-family: Arial, sans-serif;
+    background-image: url('/static/images/3.jpg'); /* Ruta de la imagen */
+    background-size: cover; /* Asegúrate de que la imagen cubra toda la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    margin: 0; /* Elimina márgenes */
+    padding: 0; /* Elimina rellenos */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+/* Estilo del contenedor del formulario */
+.container {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con algo de transparencia */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Ancho máximo del contenedor */
+    width: 100%; /* Ancho completo */
+    text-align: center;
+}
+
+/* Estilo del encabezado */
+h2 {
+    margin-bottom: 20px;
+    color: #2663ec;
+}
+
+/* Estilo de las etiquetas y campos de entrada */
+label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Estilo del botón de registro */
+button {
+    background-color: #2663ec;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #0c41bd;
+}
+
+/* Estilo del mensaje de error */
+.error-message {
+    color: red; /* Color rojo para el mensaje de error */
+    margin-bottom: 15px;
+}

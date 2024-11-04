@@ -1,0 +1,76 @@
+/* Estilo general del cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('/static/images/2.jpg'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+}
+
+/* Estilo del contenedor del formulario */
+.container {
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Ancho máximo del contenedor */
+    width: 100%; /* Ancho completo */
+    text-align: center;
+}
+
+/* Estilo del encabezado */
+h2 {
+    margin-bottom: 20px;
+    color: #2663ec;
+}
+
+/* Estilo de las etiquetas y campos de entrada */
+label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Estilo del botón de inicio de sesión */
+button {
+    background-color: #2663ec;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #0c41bd;
+}
+
+/* Estilo de los enlaces */
+a {
+    color: #2663ec;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+}
+
+a:hover {
+    text-decoration: underline;
+}

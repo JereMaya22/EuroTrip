@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EuroTrip - Inicio</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/stylesHome.css' %}">
+</head>
+<body>
+    <div class="tab">
+        <img src="/static/images/white_logo_transparent_background.webp" alt="Logo EuroTrip" class="tablinks" onclick="openTab(event, 'Home')" style="cursor: pointer; max-width: 15%; height: auto;">
+        <div style="margin-left: auto; display: flex; gap: 10px;">
+            {% if user %}
+                <button class="tablinks" onclick="window.location.href='{% url 'historial' %}'">Historial</button>
+                <button class="tablinks" onclick="window.location.href='{% url 'user_profile' %}'">{{ user.nombre }}</button>
+                <button class="tablinks" onclick="window.location.href='{% url 'logout' %}'">Cerrar Sesión</button>
+            {% else %}
+                <button class="tablinks" onclick="window.location.href='{% url 'register' %}'">Registrarse</button>
+                <button class="tablinks" onclick="window.location.href='{% url 'login' %}'">Iniciar Sesión</button>
+            {% endif %}
+        </div>
+    </div>
+    <div id="Home" class="tabcontent">
+        <div class="container">
+            <h1>Encuentra tu próximo destino</h1>
+            <p class="highlight-text">Reserva vuelos a los mejores precios y vive experiencias inolvidables</p>
+            <form id="flightForm">
+                <div class="search-box">
+                    <div class="search-field">
+                        <label for="origen">Origen</label>
+                        <input type="text" id="origen" name="origen" placeholder="Ingrese el origen..." required>
+                    </div>
+                    <div class="search-field">
+                        <label for="destino">Destino</label>
+                        <input type="text" id="destino" name="destino" placeholder="Ingrese el destino..." required>
+                    </div>
+                    <div class="search-field">
+                        <label for="fechaSalida">Fecha de Salida</label>
+                        <input type="date" id="fechaSalida" name="fechaSalida" required>
+                    </div>
+                    <div class="search-field">
+                        <label for="fechaLlegada">Fecha de Llegada</label>
+                        <input type="date" id="fechaLlegada" name="fechaLlegada" required>
+                    </div>
+                    <div class="search-field">
+                        <label for="numeroDeAdultos">Número de Adultos</label>
+                        <input type="number" id="numeroDeAdultos" name="numeroDeAdultos" min="1" required>
+                    </div>
+                </div>
+                <button class="search-button" type="submit">Buscar Vuelos</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pestaña flotante para mostrar resultados -->
+    <div id="floatingPanel" class="floating-panel" style="display: none;">
+        <h2>Resultados de Vuelos</h2>
+        <div id="results" class="results"></div>
+        <button id="closePanel">Cerrar</button>
+    </div>
+
+    <!-- Destinos Populares -->
+    <div class="popular-destinations">
+        <h2>Destinos Populares</h2>
+        <div class="destination-cards">
+            <div class="card">
+                <img src="{% static 'images/Paris.avif' %}" alt="París">
+                <h3>París</h3>
+                <p>La capital y ciudad del amor y la luz.</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'images/nuevayork.jpeg' %}" alt="Nueva York">
+                <h3>Nueva York</h3>
+                <p>La gran manzana, llena de vida.</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'images/tokio.webp' %}" alt="Tokio">
+                <h3>Tokio</h3>
+                <p>Una mezcla de tradición y modernidad.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ¿Por qué elegirnos? -->
+    <div class="why-choose-us">
+        <h2>¿Por qué elegirnos?</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="circle">💲</div>
+                <h3>Mejores precios</h3>
+                <p>Ofrecemos tarifas competitivas para que puedas disfrutar de tus viajes sin preocuparte por el presupuesto.</p>
+            </div>
+            <div class="feature-card">
+                <div class="circle">✈️</div>
+                <h3>Amplia selección</h3>
+                <p>Elige entre una variedad de destinos y opciones de viaje que se adaptan a tus necesidades y preferencias.</p>
+            </div>
+            <div class="feature-card">
+                <div class="circle">⭐</div>
+                <h3>Atención al cliente</h3>
+                <p>Nuestro equipo está disponible 24/7 para ayudarte con cualquier consulta o problema que puedas tener.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información de contacto -->
+    <div class="contact-info">
+        <div class="column">
+            <h3>Contacto</h3>
+            <p>Teléfono: +503 4567 1234</p>
+            <p>Email: contacto@eurotrip.com</p>
+        </div>
+        <div class="column">
+            <h3>Dirección</h3>
+            <p>Calle Principal, San Salvador, El Salvador</p>
+        </div>
+        <div class="column">
+            <h3>Redes Sociales</h3>
+            <p>Facebook | Twitter | Instagram</p>
+        </div>
+    </div>
+
+    <div id="successModal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5);">
+        <div style="background:#fff; margin:15% auto; padding:20px; width:300px; text-align:center;">
+            <h2>Compra realizada con éxito</h2>
+            <p>Gracias por tu compra.</p>
+            <button onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+        
+        window.onload = function() {
+            if (new URLSearchParams(window.location.search).get('success')) {
+                document.getElementById('successModal').style.display = 'block';
+            }
+        };
+        
+        
+        function openTab(evt, tabName) {
+            var tabcontent = document.getElementsByClassName("tabcontent");
+            for (var i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+        
+            var tablinks = document.getElementsByClassName("tablinks");
+            for (var i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+        
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector('.tablinks').click();
+        });
+        
+        document.getElementById('flightForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+        
+            const formData = {
+                origen: document.getElementById('origen').value,
+                destino: document.getElementById('destino').value,
+                fechaSalida: document.getElementById('fechaSalida').value,
+                fechaLlegada: document.getElementById('fechaLlegada').value,
+                numeroDeAdultos: document.getElementById('numeroDeAdultos').value
+            };
+        
+            try {
+                const response = await fetch('/search-flights/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(formData)
+                });
+        
+                const flights = await response.json();
+                console.log(flights);  // Imprime la respuesta en la consola para verificar su estructura
+                displayResults(flights);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        });
+        
+        function displayResults(flights) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+        
+            if (flights.errors) {
+                resultsDiv.innerHTML = `<p>Error: ${flights.errors[0].detail}</p>`;
+                document.getElementById('floatingPanel').style.display = 'block'; // Mostrar panel flotante
+                return;
+            }
+        
+            if (!Array.isArray(flights.data)) {
+                resultsDiv.innerHTML = '<p>No se encontraron vuelos.</p>';
+                document.getElementById('floatingPanel').style.display = 'block'; // Mostrar panel flotante
+                return;
+            }
+        
+            flights.data.forEach(flight => {
+                const flightInfo = document.createElement('div');
+                flightInfo.innerHTML = `
+                    <p>Vuelo de ${flight.itineraries[0].segments[0].departure.iataCode} a ${flight.itineraries[0].segments[0].arrival.iataCode}</p>
+                    <p>Salida: ${flight.itineraries[0].segments[0].departure.at}</p>
+                    <p>Llegada: ${flight.itineraries[0].segments[0].arrival.at}</p>
+                    <p>Precio: ${flight.price.total} ${flight.price.currency}</p>
+                    <button class="buy-button" data-flight-id="${flight.id}" data-flight-price="${flight.price.total}" data-origen="${flight.itineraries[0].segments[0].departure.iataCode}" data-destino="${flight.itineraries[0].segments[0].arrival.iataCode}" data-salida="${flight.itineraries[0].segments[0].departure.at}" data-llegada="${flight.itineraries[0].segments[0].arrival.at}">Comprar</button> 
+                `;
+                resultsDiv.appendChild(flightInfo);
+            });
+        
+            document.getElementById('floatingPanel').style.display = 'block'; // Mostrar panel flotante
+        
+        }
+        
+        document.getElementById('closePanel').addEventListener('click', function() {
+            document.getElementById('floatingPanel').style.display = 'none';
+        });
+        
+        document.getElementById("Home").style.display = "block";
+        
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('buy-button')) {
+                const flightId = event.target.getAttribute('data-flight-id');
+                const flightPrice = event.target.getAttribute('data-flight-price');
+                const flightSalida = event.target.getAttribute('data-salida');  // Extraer el precio del vuelo
+                const flightLlegada = event.target.getAttribute('data-llegada');  // Extraer el precio del vuelo
+
+                const UserId= '{{request.session.user_id}}';
+                const Facture={
+                    userId: UserId,
+                    flight_id: flightId,
+                    price: flightPrice,
+                    origen: event.target.getAttribute('data-origen'),
+                    destino: event.target.getAttribute('data-destino'),
+                    fechaSalida: flightSalida.toString().split('T')[0],
+                    fechaLlegada: flightLlegada.toString().split('T')[0],
+                }
+
+                        // Enviar datos al backend mediante fetch
+                fetch('/recivo/', {
+                    method: 'POST',
+                    headers: {  
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}' // Asegúrate de incluir el token CSRF
+                    },
+                    body: JSON.stringify(Facture)
+                }).then(response => {
+                    // Imprimir la respuesta para depuración
+                    console.log('Respuesta del servidor:', response);
+                    return response.json();  // Intenta convertir a JSON
+                })
+                .then(data => {
+                    if (data.approval_url) {
+                        window.location.href = data.approval_url; 
+                    } else {
+                        console.error("Error al crear el pago:", data.error);
+                    }
+                })
+                .catch(error => console.error('Error al crear el pago:', error));
+                
+                fetch('/create-payment/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        flight_id: flightId,
+                        price: flightPrice  // Enviar el precio
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.approval_url) {
+                        window.location.href = data.approval_url;  // Redirige a PayPal
+                    } else {
+                        console.error("Error al crear el pago:", data.error);
+                    }
+                })
+                .catch(error => console.error('Error al crear el pago:', error));
+            }
+        });
+    </script>
+</body>
+</html>
